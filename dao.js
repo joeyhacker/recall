@@ -8,6 +8,7 @@
 var mongoose = require('mongoose'),
     schema = mongoose.Schema,
     util = require('util'),
+    fs = require('fs'),
     config = require('config')
     ;
 
@@ -17,9 +18,13 @@ var Dao = function(host, port, dbName){
     mongoose.connect(uri);
 
 
-
+    var models_path = __dirname + '/models';
+    fs.readdirSync(models_path).forEach(function (file) {
+        require(models_path + '/' + file)
+    })
 
 }
+
 
 module.exports = new Dao(config.dbHost, config.dbPort, config.dbName)
 
