@@ -7,6 +7,7 @@
  */
 
 var express = require('express'),
+    dao = require('dao'),
     app = express();
 
 

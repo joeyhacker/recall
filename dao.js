@@ -9,7 +9,8 @@ var mongoose = require('mongoose'),
     schema = mongoose.Schema,
     util = require('util'),
     fs = require('fs'),
-    config = require('config')
+    config = require('./config'),
+    Model
     ;
 
 var Dao = function(host, port, dbName){
@@ -17,12 +18,21 @@ var Dao = function(host, port, dbName){
     console.log('db uri: ' + uri);
     mongoose.connect(uri);
 
+    Model =  require('./model')(mongoose, schema);
 
-    var models_path = __dirname + '/models';
-    fs.readdirSync(models_path).forEach(function (file) {
-        require(models_path + '/' + file)
-    })
+    console.log('User:' + Model.User);
 
+    var user = new Model.User({
+        name: 'Admin',
+        username: 'admin',
+        password: 123456
+    });
+
+    user.save(function(err){
+        if(!err)
+            console.log('save ok !');
+
+    });
 }
 
 
